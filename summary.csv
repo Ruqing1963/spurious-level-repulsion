@@ -1,0 +1,20 @@
+hazard,quantity,value
+declustering,r at min_sep_frac=0,0.386
+declustering,r at min_sep_frac=0.1,0.429
+declustering,r at min_sep_frac=0.2,0.462
+declustering,r at min_sep_frac=0.3,0.492
+declustering,r at min_sep_frac=0.4,0.515
+declustering,r at min_sep_frac=0.5,0.534
+declustering,r at min_sep_frac=0.6,0.556
+declustering,r at min_sep_frac=0.7,0.572
+seasonal_gating,SSW raw interval <r>_obs,0.484
+seasonal_gating,SSW raw interval <r>_shuf,0.475
+seasonal_gating,frac intervals <90d,0.125
+seasonal_gating,frac intervals >270d,0.85
+seasonal_gating,de-seasonalized var/mean,0.671
+seasonal_gating,var/mean CI low,0.494
+seasonal_gating,var/mean CI high,0.864
+wishart_null,"iid bulk <r> P=100,T=400",0.526
+wishart_null,"iid bulk <r> P=100,T=200",0.525
+wishart_null,"iid bulk <r> P=150,T=600",0.525
+wishart_null,"iid bulk <r> P=200,T=300",0.528

@@ -1,0 +1,323 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{placeins}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+\setlength{\emergencystretch}{3em}
+\newcommand{\rr}{\langle r\rangle}
+
+\title{\bfseries Spurious level repulsion in geophysical random-matrix analysis:\\
+declustering, seasonal gating, and the Wishart null}
+\author{Ruqing Chen\\[2pt]
+\small GUT Geoservice Inc., Montr\'eal, Qu\'ebec, Canada\\
+\small \texttt{ruqing.chen@gutgeoservice.com}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+The consecutive spacing ratio $\rr$ is increasingly used to claim Wigner--Dyson
+(GOE) ``level repulsion'', and hence organisation, in geophysical and climate
+data. But $\rr$ is two-ended, and several mundane data structures mimic GOE
+without any underlying repulsion. We document three such mechanisms with
+controlled demonstrations and give the correct controls. (1)~\emph{Declustering:}
+removing points closer than a fraction of the median spacing drives even pure
+Poisson points to GOE-like $\rr$, manufacturing regularity from randomness.
+(2)~\emph{Seasonal gating:} when events can occur only in a fixed season, the
+inter-event interval distribution is bimodal and the naive $\rr$ lands between
+Poisson and GOE as an artifact of that marginal. For 41 major sudden
+stratospheric warmings the naive interval $\rr=0.48$ is permutation-invariant
+(scalar), while the correct de-seasonalised test --- the per-winter event count
+--- shows mild \emph{under-dispersion} (variance/mean $=0.67$, 95\% CI excluding
+unity), i.e.\ a weak refractory clock, not level repulsion. (3)~\emph{The Wishart
+null:} the eigenvalue spacing of a sample correlation matrix is GOE for
+independent data, so ``GOE level spacing'' in a climate correlation matrix is the
+finite-sampling null; the physical signal lies in the eigenvalue \emph{density}
+(departures from Marchenko--Pastur), not in its spacing. The honest diagnostics
+are raw $\rr$ with the coefficient of variation, the permutation (shuffle) test,
+an appropriate physical null, and --- for correlation matrices --- the eigenvalue
+density rather than its spacing.
+\end{abstract}
+
+\section{Introduction}
+
+Random-matrix theory (RMT) provides a celebrated test for ``order'' in a
+sequence of levels: the spacings between consecutive levels follow Poisson
+statistics for an uncorrelated sequence and the Wigner--Dyson statistics of the
+Gaussian ensembles for a spectrum with level repulsion \citep{mehta2004}. A
+convenient, unfolding-free measure is the mean ratio of consecutive spacings
+\citep{oganesyan2007,atas2013},
+\begin{equation}
+\rr = \Big\langle \frac{\min(s_i,s_{i+1})}{\max(s_i,s_{i+1})}\Big\rangle,
+\qquad s_i = x_{i+1}-x_i,
+\label{eq:r}
+\end{equation}
+which takes the reference values $0.386$ (Poisson), $0.531$ (GOE) and $0.603$
+(GUE). The statistic is attractive precisely because it needs no unfolding, and
+it is now applied well beyond quantum spectra --- to earthquake catalogues,
+eruption sequences, climate indices and ore-deposit records --- often to argue
+that a geophysical system shows ``level repulsion'' and is therefore organised by
+a single coherent process.
+
+This note is a caution. The ratio $\rr$ is two-ended: a value above the Poisson
+reference can arise from genuine level repulsion, but equally from a narrow or
+structured marginal spacing distribution with no sequential repulsion at all, or
+from pre-processing. We document three distinct ways in which geophysical and
+climate analyses obtain GOE-like $\rr$ without any underlying repulsion, each
+with a controlled demonstration, and we state the diagnostic that exposes it. The
+first mechanism was reported in a companion study of orogenic-gold vein spacing
+\citep{chen2026sigma}; we recapitulate it and add two more that are specific to
+climate data, unifying all three under a single rule: \emph{compare the observed
+statistic against the permutation of its own data and against the correct null,
+never against the textbook GOE value alone.}
+
+\section{The ratio statistic and the permutation test}
+
+Genuine level repulsion has two fingerprints: a marginal spacing distribution
+that is depleted at small spacings (so that $P(s\!\to\!0)\to0$), \emph{and}
+sequential anti-correlation (spectral rigidity). The ratio $\rr$ responds to
+both. The decisive control is the \emph{permutation (shuffle) test}: randomly
+re-order the spacings, which preserves the marginal distribution exactly but
+destroys any sequential correlation, and recompute $\rr$. If
+$\rr_{\mathrm{obs}}\approx\rr_{\mathrm{shuf}}$, the value is a property of the
+marginal alone --- it carries no sequential repulsion, however far above Poisson
+it lies \citep{chen2026nucleosome}. We also report the coefficient of variation
+$\mathrm{CV}=\sigma_s/\bar s$, which is $1$ for Poisson, $<1$ for regular sets and
+$>1$ for clustered sets. With these two numbers, and an appropriate null, each of
+the three hazards below is immediately diagnosable.
+
+\section{Hazard 1: declustering fabricates GOE}
+
+A common pre-processing step is \emph{declustering}: removing points that lie
+closer together than some fraction of the median spacing. This manufactures
+regularity from any input. Figure~\ref{fig:hazards}a shows the effect on pure
+Poisson points: as the minimum-separation threshold increases from $0$ to $0.7$
+median spacings, $\rr$ rises monotonically from the Poisson value $0.386$ through
+the GOE value $0.531$ to $0.57$. No repulsion is present in the data; the GOE-like
+value is entirely an artifact of the thinning rule. Mechanistically,
+declustering injects an \emph{artificial hard core}: by deleting the smallest
+spacings it forces $P(s\!\to\!0)\to0$, the very depletion that defines level
+repulsion, so it manufactures a steric-exclusion signature the data do not
+contain --- the inverse of the genuine hard cores documented in nucleosome
+arrays and ice-wedge networks. This hazard was identified,
+with a field example, in a study of orogenic-gold vein spacing
+\citep{chen2026sigma}, where raw vein positions are clustered ($\rr=0.34$) but
+rise to $0.44$--$0.50$ under declustering in lockstep with random controls. The
+remedy is simple: never decluster before computing a spacing statistic; report
+the raw $\rr$ with CV.
+
+\section{Hazard 2: seasonal gating}
+
+Many geophysical events can occur only within a fixed window of the year ---
+winter storms, monsoon bursts, stratospheric warmings. This seasonal gating
+imprints a strong periodic structure on the sequence of event times that has
+nothing to do with the system's internal dynamics, yet contaminates the naive
+interval statistic.
+
+We illustrate with major sudden stratospheric warmings (SSWs), the abrupt
+reversals of the winter polar vortex. We use the 41 central dates of major
+Northern-Hemisphere SSWs in the JRA-55 reanalysis (1958--2023) from the NOAA SSW
+Compendium \citep{butler2017,charlton2007}. Computed naively on the calendar
+sequence, the inter-event interval ratio is $\rr=0.484$ --- comfortably between
+Poisson and GOE, and easily mis-read as partial ``repulsion''. It is nothing of
+the kind. The interval distribution is strongly bimodal
+(Fig.~\ref{fig:hazards}b): $85\%$ of intervals exceed $270$ days (the gaps across
+each SSW-free summer) and only a handful fall within a winter. The permutation
+test confirms the artifact: $\rr_{\mathrm{shuf}}=0.475$, indistinguishable from
+the observed value, so the elevation above Poisson is a property of the bimodal,
+seasonally-imposed marginal --- a scalar, not sequential repulsion. The
+intermediate value follows directly from the bimodality: consecutive
+cross-summer gaps (the dominant mode) give ratios near unity, while the
+occasional pairing of a within-winter interval with a cross-summer gap gives
+ratios near zero, and the average of these extremes falls between the Poisson and
+GOE references. Because this is a property of the marginal alone, the permutation
+test reproduces it exactly.
+
+The physically meaningful question --- does the vortex resist a second warming
+(a refractory period) or fire at random? --- is answered only after
+de-seasonalising. Counting major SSWs per winter season over the 66 winters
+spanned (Fig.~\ref{fig:ssw}) gives a mean of $0.62$ and a variance of $0.42$, a
+variance-to-mean ratio of $0.67$ with a bootstrap $95\%$ confidence interval of
+$[0.49,0.86]$ that excludes unity. The counts are therefore mildly
+\emph{under-dispersed}: winters with two SSWs are rarer, and winters with exactly
+one are commoner, than a Poisson process would produce, consistent with a
+recovery (refractory) timescale after each event \citep{ineson2024}. This is a
+weak scalar refractory clock --- the opposite end of the spacing axis from
+clustering, but not Wigner--Dyson level repulsion, and invisible to the naive
+interval $\rr$.
+
+\section{Hazard 3: the Wishart null}
+
+RMT is also applied to climate \emph{correlation matrices}: the $P\times P$
+matrix of correlations among $P$ spatial cells or indices, whose eigenvalues are
+then examined for GOE level statistics, taken as evidence of collective
+organisation \citep{santhanam2001}. Here the trap is more basic. The eigenvalue
+spacing of a sample correlation (Wishart) matrix is GOE \emph{by construction},
+independent of any real correlation in the data. Figure~\ref{fig:hazards}c
+demonstrates this: for $P$ \emph{independent} Gaussian time series of length $T$
+--- zero true correlation --- the bulk eigenvalue ratio of the sample correlation
+matrix is $\rr\approx0.53$ across a range of $(P,T)$, squarely at the GOE value.
+GOE-class level spacing is thus the finite-sampling \emph{null} for any
+correlation matrix; reporting it as a climate finding is to report the null. The
+bulk spacing is fixed by random-matrix universality --- the local eigenvalue
+statistics shared by essentially every large matrix in the ensemble, independent
+of the entries' physical origin --- so it tests that universality class, not any
+climate or geophysical dynamics.
+
+The genuine RMT signal in a correlation matrix is not in the spacing but in the
+eigenvalue \emph{density}: eigenvalues that escape the Marchenko--Pastur support
+expected for pure noise mark real collective modes \citep{marchenko1967}, exactly
+as established for financial covariance matrices \citep{laloux1999,plerou2002}.
+The level spacing of the bulk is GOE whether or not those modes exist. The remedy
+is to test the eigenvalue density against Marchenko--Pastur, and reserve any
+spacing analysis for the de-noised spectrum.
+
+\begin{table}[t]
+\centering
+\caption{Three routes to spurious GOE-like $\rr$ and the diagnostic that exposes
+each.}
+\label{tab:hazards}
+\begin{tabular}{lll}
+\toprule
+Hazard & Spurious result & Correct diagnostic\\
+\midrule
+Declustering        & random points $\to\rr\approx$ GOE      & raw $\rr$, no thinning; CV\\
+Seasonal gating     & bimodal intervals $\to\rr=0.48$        & permutation test; de-seasonalised counts\\
+Wishart sampling    & iid data $\to$ bulk $\rr\approx$ GOE   & eigenvalue density vs Marchenko--Pastur\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{fig_hazards.pdf}
+\caption{Three ways to fabricate GOE-like level repulsion.
+\textbf{(a)} Minimum-separation declustering drives pure Poisson points from
+$\rr=0.386$ through the GOE value to $0.57$.
+\textbf{(b)} Sudden-stratospheric-warming inter-event intervals are bimodal
+(note the cross-summer gaps near and beyond one year); the naive $\rr=0.48$
+equals its permutation value and is a seasonal artifact.
+\textbf{(c)} The bulk eigenvalue ratio of a sample correlation matrix built from
+\emph{independent} Gaussian series sits at the GOE value for every $(P,T)$ tested:
+GOE spacing is the Wishart null.}
+\label{fig:hazards}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.6\textwidth]{fig_ssw_counts.pdf}
+\caption{De-seasonalised sudden stratospheric warmings: the per-winter event
+count is mildly under-dispersed relative to Poisson (variance/mean $=0.67$, 95\%
+CI $[0.49,0.86]$, excluding unity) --- a weak refractory clock, not level
+repulsion. Winters with exactly one SSW are commoner, and winters with two rarer,
+than Poisson predicts.}
+\label{fig:ssw}
+\end{figure}
+
+\FloatBarrier
+\section{Correct practice}
+
+The three hazards share a single remedy, summarised in Table~\ref{tab:hazards}.
+Before interpreting any $\rr$ above the Poisson value as level repulsion: (i)~use
+the raw data, applying no declustering or thinning; (ii)~run the permutation
+(shuffle) test --- if $\rr_{\mathrm{obs}}\approx\rr_{\mathrm{shuf}}$ the value is a
+marginal (scalar) property, not sequential repulsion; (iii)~report the
+coefficient of variation alongside $\rr$, since clustered sets ($\mathrm{CV}>1$)
+can sit near or below Poisson while a narrow marginal ($\mathrm{CV}<1$) lifts
+$\rr$ without repulsion; (iv)~for periodically gated events, de-seasonalise (e.g.\
+analyse per-season counts) before drawing dynamical conclusions; and (v)~for
+correlation matrices, test the eigenvalue density against Marchenko--Pastur
+rather than reading GOE off the bulk spacing. Genuine Wigner--Dyson repulsion
+survives all of these; the spurious cases do not.
+
+\section{Conclusion}
+
+GOE-like values of the consecutive spacing ratio are easy to obtain by accident.
+Declustering manufactures them from random points; seasonal gating manufactures
+them from the calendar; and the eigenvalue spacing of any sample correlation
+matrix is GOE for independent data. None of these is level repulsion. The
+permutation test, the coefficient of variation, de-seasonalisation, and the
+Marchenko--Pastur density test distinguish a real Wigner--Dyson spectrum from its
+common impostors. Applied to sudden stratospheric warmings, the honest analysis
+finds not level repulsion but a weak refractory clock --- a small, real, and
+correctly-attributed result.
+
+\section*{Data and code availability}
+The SSW central dates are from the NOAA SSW Compendium \citep{butler2017}
+(\url{https://csl.noaa.gov/groups/csl8/sswcompendium/}). All demonstrations are
+synthetic or use these public dates; code and derived tables are at
+\url{https://github.com/Ruqing1963/spurious-level-repulsion} and archived on
+Zenodo (DOI assigned on release).
+
+\begin{thebibliography}{99}
+
+\bibitem[Atas et al.(2013)]{atas2013}
+Y.~Y. Atas, E.~Bogomolny, O.~Giraud, and G.~Roux.
+Distribution of the ratio of consecutive level spacings in random matrix
+ensembles. \textit{Phys. Rev. Lett.} \textbf{110}, 084101 (2013).
+
+\bibitem[Butler et al.(2017)]{butler2017}
+A.~H. Butler, J.~P. Sjoberg, D.~J. Seidel, and K.~H. Rosenlof.
+A sudden stratospheric warming compendium.
+\textit{Earth Syst. Sci. Data} \textbf{9}, 63--76 (2017).
+
+\bibitem[Charlton \& Polvani(2007)]{charlton2007}
+A.~J. Charlton and L.~M. Polvani.
+A new look at stratospheric sudden warmings. Part I: Climatology and modeling
+benchmarks. \textit{J. Climate} \textbf{20}, 449--469 (2007).
+
+\bibitem[Chen(2026a)]{chen2026sigma}
+R.~Chen.
+Time--space asymmetry in orogenic gold systems: temporal level repulsion but
+spatial clustering of ore-stage veins at the Sigma deposit. Zenodo,
+\url{https://doi.org/10.5281/zenodo.20778697} (2026).
+
+\bibitem[Chen(2026b)]{chen2026nucleosome}
+R.~Chen.
+The consecutive spacing-ratio of nucleosome arrays: high regularity from steric
+renewal, not level repulsion. Zenodo, \url{https://doi.org/10.5281/zenodo.20839558}
+(2026).
+
+\bibitem[Ineson et al.(2024)]{ineson2024}
+S.~Ineson, et al.
+Statistics of sudden stratospheric warmings using a large model ensemble.
+\textit{Atmos. Sci. Lett.} \textbf{25}, e1202 (2024).
+
+\bibitem[Laloux et al.(1999)]{laloux1999}
+L.~Laloux, P.~Cizeau, J.-P. Bouchaud, and M.~Potters.
+Noise dressing of financial correlation matrices.
+\textit{Phys. Rev. Lett.} \textbf{83}, 1467--1470 (1999).
+
+\bibitem[Marchenko \& Pastur(1967)]{marchenko1967}
+V.~A. Marchenko and L.~A. Pastur.
+Distribution of eigenvalues for some sets of random matrices.
+\textit{Mat. Sb.} \textbf{72}, 507--536 (1967).
+
+\bibitem[Mehta(2004)]{mehta2004}
+M.~L. Mehta. \textit{Random Matrices}, 3rd ed. Elsevier, Amsterdam (2004).
+
+\bibitem[Oganesyan \& Huse(2007)]{oganesyan2007}
+V.~Oganesyan and D.~A. Huse.
+Localization of interacting fermions at high temperature.
+\textit{Phys. Rev. B} \textbf{75}, 155111 (2007).
+
+\bibitem[Plerou et al.(2002)]{plerou2002}
+V.~Plerou, P.~Gopikrishnan, B.~Rosenow, L.~A.~N. Amaral, T.~Guhr, and
+H.~E. Stanley.
+Random matrix approach to cross correlations in financial data.
+\textit{Phys. Rev. E} \textbf{65}, 066126 (2002).
+
+\bibitem[Santhanam \& Patra(2001)]{santhanam2001}
+M.~S. Santhanam and P.~K. Patra.
+Statistics of atmospheric correlations.
+\textit{Phys. Rev. E} \textbf{64}, 016102 (2001).
+
+\end{thebibliography}
+
+\end{document}
